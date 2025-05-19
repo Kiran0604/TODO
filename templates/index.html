@@ -21,12 +21,24 @@
     <button>Add</button>
   </form>
   <ul>
-    {% for todo in todos %}
-    <li>
-      {{ todo.task }}
-      <a href="/delete/{{ todo._id }}">Delete</a>
-    </li>
-    {% endfor %}
-  </ul>
+  {% for todo in todos %}
+  <li>
+    <form action="/update/{{ todo._id }}" method="POST" style="display: inline-flex; width: 100%;">
+      {% if request.args.get('edit') == todo._id|string %}
+        <input type="text" name="todo" value="{{ todo.task }}" required style="flex: 1; padding: 0.5em;">
+        <button type="submit">Save</button>
+        <a href="/">Cancel</a>
+      {% else %}
+        <span style="flex: 1;">{{ todo.task }}</span>
+        <span style="white-space: nowrap;">
+          <a href="/?edit={{ todo._id }}">Edit</a> |
+          <a href="/delete/{{ todo._id }}">Delete</a>
+        </span>
+      {% endif %}
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+
 </body>
 </html>
