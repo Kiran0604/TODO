@@ -25,5 +25,16 @@ def delete(id):
     todos.delete_one({'_id': ObjectId(id)})  # ✅ Fixed here
     return redirect('/')
 
+@app.route('/update/<id>', methods=['GET', 'POST'])
+def update(id):
+    if request.method == 'POST':
+        new_task = request.form.get('todo')
+        if new_task:
+            todos.update_one({'_id': ObjectId(id)}, {'$set': {'task': new_task}})
+        return redirect('/')
+    else:
+        todo = todos.find_one({'_id': ObjectId(id)})
+        return render_template('update.html', todo=todo)
+
 if __name__ == '__main__':
     app.run(debug=True)
