@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Todo</title>
+  <style>
+    body { font-family: sans-serif; background: #f9f9f9; padding: 2em; }
+    h2 { margin-bottom: 1em; }
+    form { display: flex; gap: 0.5em; margin-bottom: 1em; }
+    input { flex: 1; padding: 0.5em; }
+    button { padding: 0.5em 1em; }
+    ul { list-style: none; padding: 0; }
+    li {
+      background: #fff;
+      margin-bottom: 0.5em;
+      padding: 0.5em;
+      display: flex;
+      justify-content: space-between;
+      border: 1px solid #ddd;
+      align-items: center;
+    }
+    .task-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .timestamp {
+      font-size: 0.8em;
+      color: #666;
+    }
+    a { color: red; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <h2>📝 My Todo List</h2>
+  <form action="/add" method="POST">
+    <input type="text" name="todo" placeholder="Add task" required>
+    <button>Add</button>
+  </form>
+  <ul>
+    {% for todo in todos %}
+      <li>
+        <div class="task-info">
+          {{ todo.task }}
+          <span class="timestamp">{{ todo.created_at.strftime('%Y-%m-%d %H:%M:%S') if todo.created_at else '' }}</span>
+        </div>
+        <a href="/delete/{{ todo._id }}">Delete</a>
+      </li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
